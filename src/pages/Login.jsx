@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import logo from '../assets/ccee-logo.png';
 import vector from '../assets/Vector.png';
@@ -11,20 +11,24 @@ import {RiInstagramLine} from "react-icons/ri";
 const Login = () => {
 
     const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     return (
-        <div className="min-h-screen flex items-center justify-center">
-           <div className="p-10 bg-main-bg drop-shadow-login mb-16   rounded-3xl overflow-hidden">
+        <div className=" min-h-screen flex items-center justify-center">
+           <div className="bg-opacity-50 p-2 md:p-10 bg-main-bg drop-shadow-login mb-16   rounded-3xl overflow-hidden">
                <img src={vector} alt="" className="animate-pulse absolute drop-shadow-login-blob -top-20 -right-10"/>
                <img src={vector1} alt="" className="animate-pulse absolute drop-shadow-login-blob -bottom-32 -left-24"/>
-               <div className="mb-10 ">
+               <div className="mt-4 mb-4 md:mb-10 ">
                    <img src={logo} alt="" className="mx-auto"/>
                </div>
-               <form className="p-4 px-16 space-y-12 text-white">
-                   <div className="relative ">
+               <form className="p-4  md:px-16 space-y-12 text-white">
+                   <div className="relative flex">
                        <input type="email"
                               id="email"
-                              className="w-full md:block p-1 md:w-[320px] peer appearance-none bg-transparent focus:outline focus:outline-0 border-b-2 border-white"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              className=" w-72 md:block p-1 md:w-[320px] peer appearance-none bg-transparent focus:outline focus:outline-0 border-b-2 border-white"
                               placeholder=""
                        />
                        <label htmlFor="email"
@@ -40,10 +44,12 @@ const Login = () => {
                                peer-focus:-translate-y-6 ">
                            Email</label>
                    </div>
-                   <div className="relative ">
+                   <div className="relative flex">
                        <input type="password"
                               id="password"
-                              className="w-full md:block p-2 md:w-[320px] peer appearance-none bg-transparent focus:outline focus:outline-0 border-b-2 border-white"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              className="w-full md:block p-1 md:w-[320px] peer appearance-none bg-transparent focus:outline focus:outline-0 border-b-2 border-white"
                               placeholder=""
                        />
                        <label htmlFor="password"
@@ -67,15 +73,18 @@ const Login = () => {
                    </div>
                </form>
            </div>
-            <nav className="absolute bottom-0 flex space-x-3 text-white items-center">
+            <nav className=" absolute bottom-6 flex flex-wrap space-x-3 text-white items-center">
                 <a className="flex items-center" href="https://instagram.com/ceeofficiel">
-                    <RiInstagramLine size={35} className="mr-2" />instagram.com/ceeofficiel
+                    <RiInstagramLine size={35} className="mr-2" />
+                    <span className="hidden md:inline">instagram.com/ceeofficiel</span>
                 </a>
                 <a className="flex items-center" href="https://twitter.com/ceeofficiel">
-                    <FiTwitter size={35} className="mr-2"/>twitter.com/ceeofficiel
+                    <FiTwitter size={35} className="mr-2"/>
+                    <span  className="hidden md:inline">twitter.com/ceeofficiel</span>
                 </a>
                 <a className="flex items-center" href="https://tinyurl.com/ceeofficiel">
-                    <ImYoutube2 size={60} className="mr-2"/>tinyurl.com/ceeofficiel
+                    <ImYoutube2 size={60} className="mr-2"/>
+                    <span  className="hidden md:inline">tinyurl.com/ceeofficiel</span>
                 </a>
             </nav>
         </div>

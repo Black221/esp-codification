@@ -1,59 +1,98 @@
 import React from "react";
-import Particles from 'react-tsparticles';
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
+import { useCallback } from "react";
 
 const Background = () => {
-    return(
+
+    const particlesInit = useCallback(async (engine) => {
+        console.log(engine);
+        await loadFull(engine);
+    }, []);
+
+    const particlesLoaded = useCallback(async (container) => {
+        await console.log(container);
+    }, []);
+
+    return (
         <Particles
+            className="absolute "
+            id="tsparticles"
+            init={particlesInit}
+            loaded={particlesLoaded}
             options={{
                 background: {
-                    color: "#181A18"
+
                 },
-                fpsLimit: 60,
+                fpsLimit: 120,
                 interactivity: {
-                    detectsOn: "canvas",
                     events: {
-                        resize: true
-                    }
+                        onClick: {
+                            enable: true,
+                            mode: "push",
+                        },
+                        onHover: {
+                            enable: true,
+                            mode: "repulse",
+                        },
+                        resize: true,
+                    },
+                    modes: {
+                        push: {
+                            quantity: 4,
+                        },
+                        repulse: {
+                            distance: 100,
+                            duration: 20,
+                        },
+                    },
                 },
                 particles: {
                     color: {
-                        value: "#ffffff"
+                        value: "#91b9ea",
+                    },
+                    links: {
+                        color: "#0364d2",
+                        distance: 100,
+                        enable: true,
+                        opacity: 0.5,
+                        width: 1,
+                    },
+                    collisions: {
+                        enable: true,
+                    },
+                    move: {
+                        directions: "none",
+                        enable: true,
+                        outModes: {
+                            default: "bounce",
+                        },
+                        random: false,
+                        speed: 2,
+                        straight: false,
                     },
                     number: {
                         density: {
                             enable: true,
-                            area: 1000
+                            area: 1000,
                         },
-                        limit: 0,
-                        value: 300
+                        value: 80,
                     },
                     opacity: {
-                        animation: {
-                            enable: true,
-                            minimumValue: 0.05,
-                            speed: 1,
-                            sync: false
-                        },
-                        random: {
-                            enable: true,
-                            minimumValue: 0.05
-                        },
-                        value: 1
+                        value: 0.5,
                     },
                     shape: {
-                        type: "star"
+                            type: "circle",
                     },
                     size: {
-                        randmon: {
-                            enable: true,
-                            minimumValue: 0.5,
-                            value: 1
-                        }
-                    }
-                }
+                        value: { min: 1, max: 5 },
+                    },
+                },
+                detectRetina: true,
             }}
         />
-    )
-}
+    );
+};
 
 export default Background;
+

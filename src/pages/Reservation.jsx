@@ -8,9 +8,9 @@ const Reservation = () => {
     return (
         <div className="text-white">
             <HeadComponent />
-            <div className=" flex flex-col justify-center items-center">
-                <div className="flex flex-col items-center justify-center space-y-8 mb-4">
-                   <h1 className="font-bold text-3xl">Vous avez deja réservé  !</h1>
+            <div className="mt-6 flex flex-col justify-center items-center">
+                <div className=" flex flex-col items-center justify-center space-y-8 mb-4">
+                   <h1 className="font-bold md:text-3xl text-2xl">Vous avez deja réservé  !</h1>
                     <img src={reservation} alt=""/>
                 </div>
                 <ListItem />
