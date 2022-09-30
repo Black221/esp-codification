@@ -72,7 +72,7 @@ const Register = () => {
 
     return (
         <div className=" min-h-screen flex items-center justify-center">
-            <div className="bg-opacity-50 p-2 md:p-10 bg-main-bg drop-shadow-login mb-16   rounded-3xl overflow-hidden">
+            <div className="bg-opacity-30 p-2 md:p-10 bg-main-bg drop-shadow-login mb-16   rounded-3xl overflow-hidden">
                 <img src={vector} alt="" className="animate-pulse absolute drop-shadow-login-blob -top-20 -right-10"/>
                 <img src={vector1} alt="" className="animate-pulse absolute drop-shadow-login-blob -bottom-32 -left-24"/>
                 <div className="mt-4 mb-4 md:mb-10 ">

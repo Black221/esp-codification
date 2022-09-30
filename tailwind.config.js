@@ -47,16 +47,16 @@ module.exports = {
             },
             dropShadow: {
                 'login': [
-                    '20px 20px 20px #0C2983',
-                    '-20px -20px 20px #081B53'
+                    '15px 15px 15px #0730ADFF',
+                    '-15px -15px 20px #030B23FF'
                 ],
                 'login-button': [
                     '6px 6px 4px #0C2983',
                     '-6px -6px 7px #081B53'
                 ],
                 'login-blob': [
-                    '6px 10px 7px #1f48bf',
-                    '4px -6px 8px #081B53'
+                    '6px 4px 4px #1f48bf',
+                    '2px -6px 4px #081B53'
                 ]
             }
         },
