@@ -1,6 +1,6 @@
 import React from "react";
 
-const ListItem = () => {
+const ListItem = ({chambre, members}) => {
 
     return(
         <div className="mt-0 w-full flex justify-center">
@@ -8,7 +8,7 @@ const ListItem = () => {
                 <thead className="border-b border-gray-400">
                     <tr>
                         <th colSpan="3" className="text-center border-b-2 py-4 text-xl">
-                            Chambre 6C
+                            Chambre {chambre && `${chambre.numero}${chambre.pavillon}`}
                         </th>
                     </tr>
                     <tr>
@@ -18,16 +18,13 @@ const ListItem = () => {
                     </tr>
                 </thead>
                 <tbody className="text-center">
-                    <tr className="border-b border-gray-500">
-                        <td className="py-3 px-1 md:px-6">Ndiaye Diop</td>
-                        <td className="py-3 px-1 md:px-6">Informatique</td>
-                        <td className="py-3 px-1 md:px-6">DIC2</td>
+                {members && members.map((member) => (
+                    <tr key={member._id} className="border-b border-gray-500">
+                        <td className="py-3 px-1 md:px-6">{`${member.prenom} ${member.nom}`}</td>
+                        <td className="py-3 px-1 md:px-6">{member.departement}</td>
+                        <td className="py-3 px-1 md:px-6">{member.niveau}</td>
                     </tr>
-                    <tr className="border-b border-gray-500">
-                        <td className="py-3 md:px-6">papa bouna bamba Diop</td>
-                        <td className="py-3 md:px-6">Informatique</td>
-                        <td className="py-3 md:px-6">DIC2</td>
-                    </tr>
+                ))}
                 </tbody>
             </table>
         </div>

@@ -29,11 +29,11 @@ const Background = () => {
                     events: {
                         onClick: {
                             enable: true,
-                            mode: "push",
+                            mode: ["push", "remove"],
                         },
                         onHover: {
                             enable: true,
-                            mode: "repulse",
+                            mode: ["grab"],
                         },
                         resize: true,
                     },
@@ -41,10 +41,15 @@ const Background = () => {
                         push: {
                             quantity: 4,
                         },
-                        repulse: {
+                        grab: {
                             distance: 100,
-                            duration: 20,
+                            line_linked: {
+                                opacity: 0.8
+                            }
                         },
+                        remove: {
+                            quantity: 4
+                        }
                     },
                 },
                 particles: {
@@ -53,9 +58,9 @@ const Background = () => {
                     },
                     links: {
                         color: "#0364d2",
-                        distance: 100,
+                        distance: 120,
                         enable: true,
-                        opacity: 0.5,
+                        opacity: 0.25,
                         width: 1,
                     },
                     collisions: {
@@ -68,7 +73,7 @@ const Background = () => {
                             default: "bounce",
                         },
                         random: false,
-                        speed: 2,
+                        speed: {min : 1, max: 2},
                         straight: false,
                     },
                     number: {
@@ -76,7 +81,7 @@ const Background = () => {
                             enable: true,
                             area: 1000,
                         },
-                        value: 80,
+                        value: 70,
                     },
                     opacity: {
                         value: 0.5,
