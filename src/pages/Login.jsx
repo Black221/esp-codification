@@ -126,7 +126,6 @@ const Login = () => {
                                peer-focus:-translate-y-6 ">
                                Mot de passe</label>
                        </div>
-                       <div className="text-end text-sm mt-1 text-cyan-400 onclick" >Mot de passe oublié?</div>
                    </div>
                    {!isLoading && <div className="text-center">
                        <input type="submit"

@@ -9,7 +9,7 @@ import {ImYoutube2} from 'react-icons/im'
 import {FiTwitter} from "react-icons/fi";
 import {RiInstagramLine} from "react-icons/ri";
 import {HOST, PORT} from "../config/host";
-import {useAuthStateContext} from "../context/AuthContextProvider";
+import emailJs from '@emailjs/browser';
 
 
 const Register = () => {
@@ -22,7 +22,7 @@ const Register = () => {
     const CHARACTER = "0123456789abcdefghijklmnopqrstuvwxyz!@#&*ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const [isLoading, setIsLoading] = useState(false)
     const [canConnect, setCanConnect] = useState(false)
-    const [messagePass, setMessagePass] = useState("");
+    // const [messagePass, setMessagePass] = useState("");
 
     const randPassword = () => {
         let password = "";
@@ -43,6 +43,24 @@ const Register = () => {
         setIsLoading(true)
     }
 
+    const sendEmail = (res, message) => {
+
+        emailJs.send(
+            'service_r6hou73',
+            'codification_56cli1k',
+            {
+                to_name: `${res.prenom} ${res.nom}`,
+                to_email: email,
+                message
+            },
+            'BCidLL6hrWDmpzwyN')
+            .then((result) => {
+                console.log(result.text);
+            }, (error) => {
+                console.log(error.text);
+            });
+    };
+
     useEffect(() => {
         if (password)
             axios.post(`http://${HOST}:${PORT}/compte/inscription/${numCarte}`,
@@ -56,7 +74,7 @@ const Register = () => {
                         setMessage(res.data.msg)
                     else {
                         setCanConnect(true);
-                        setMessagePass("inscription réussie votre mot de passe : ");
+                        sendEmail(res.data.etudiant, password)
                     }
                 else
                     setMessage("Une erreur est survenue, veuillez réessayer plus tard")
@@ -132,7 +150,7 @@ const Register = () => {
                         <span className="mt-2">ou</span>
                     </div>}
                     {canConnect && !isLoading && <p className="text-center text-green-500">
-                        {messagePass}<br/><span className="text-xl text-black p-2 bg-cyan-300"> {password}</span>
+                        Inscription réussie !<br/>Veuillez consulter votre boîte mail.
                     </p>}
                     {isLoading && <div><img src={loading} className="w-20 mx-auto rounded-full" alt=""/></div>}
 
