@@ -34,6 +34,7 @@ const Reservation = () => {
             {},
             {headers: {Authorization: `Bearer ${auth.user.token}`}})
             .then((res) => {
+                setCodifier(true);
                 setMessages(res.data.msg);
             })
             .catch((error) => {

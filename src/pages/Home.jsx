@@ -17,7 +17,7 @@ const Home = () => {
     const [view, setView] = useState("")
     const [level, setLevel] = useState("")
 
-    const {roomReserved, setRoomReserved, setCodifier} = useStateContext();
+    const {roomReserved, setRoomReserved} = useStateContext();
     const auth = useAuthStateContext();
 
     const fetchRooms = () => {
@@ -52,8 +52,7 @@ const Home = () => {
             axios.post(`http://${HOST}:${PORT}/reservation/reserver/${choice}`,
                 {num_carte: auth.user.num_carte},
                 {headers: {Authorization: `Bearer ${auth.user.token}`}})
-                .then((res) => {
-                    setCodifier(true)
+                .then(() => {
                     setRoomReserved(rooms.filter((room) => (room._id === choice))[0]);
                 })
                 .catch((error) => {
@@ -123,7 +122,7 @@ const Home = () => {
                         </select>
                         <select  className="bg-[rgba(0,0,0,0.5)] p-2 py-1 rounded cursor-pointer" value={choice} onChange={(e) => setChoice(e.target.value)}>
                             <option value="">Choisir chambre</option>
-                            {rooms[0] && rooms.filter(({etage, vu}) => ((etage === level || level === "") && (view === vu || view === ""))).map((room) => (
+                            {rooms[0] && rooms.filter(({etage, vue}) => ((etage === level || level === "") && (view === vue || view === ""))).map((room) => (
                                 <option key={room.numero} value={room._id}>{room.numero}</option>
                             ))}
                         </select>
