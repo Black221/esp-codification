@@ -14,7 +14,7 @@ const Reservation = () => {
     const [message, setMessages] = useState("Chambre réservée :")
 
     const navigate = useNavigate();
-    const {roomReserved, setRoomReserved, codifier} = useStateContext();
+    const {roomReserved, setRoomReserved, codifier, setCodifier} = useStateContext();
     const auth = useAuthStateContext();
 
     const fetchMembers = (id) => {
