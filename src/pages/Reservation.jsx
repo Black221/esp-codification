@@ -69,18 +69,21 @@ const Reservation = () => {
                 <h1 className="font-bold md:text-3xl text-2xl">{message}</h1>
                <div className="md:flex items-center md:space-x-10 mt-10">
                    <div className=" flex flex-col items-center justify-center space-y-8 mb-4">
-                       <img src={reservation} className="w-80" alt=""/>
+                       <img src={reservation} className="w-80 md:w-96" alt=""/>
                    </div>
-                   {roomReserved && members && <ListItem chambre={roomReserved} members={members}/>}
-                   {!codifier && <div className=" mt-6 space-x-3">
-                       <button onClick={handleValidate}
-                               className="cursor-pointer py-1 px-6 border border-green-500 text-green-400 rounded-full">Valider
-                       </button>
-                       <button onClick={handleRemove}
-                               className="cursor-pointer py-1 px-6 border border-red-500 text-red-500 rounded-full">Annuler
-                       </button>
-                   </div>}
+                   <div className="space-x-3 text-center">
+                       {roomReserved && members && <ListItem chambre={roomReserved} members={members}/>}
+                       {!codifier && <div className=" mt-6 space-x-3">
+                           <button onClick={handleValidate}
+                                   className="cursor-pointer py-1 px-6 border border-green-500 text-green-400 rounded-full">Valider
+                           </button>
+                           <button onClick={handleRemove}
+                                   className="cursor-pointer py-1 px-6 border border-red-500 text-red-500 rounded-full">Annuler
+                           </button>
+                       </div>}
+                   </div>
                </div>
+
             </div>
         </div>
     )
