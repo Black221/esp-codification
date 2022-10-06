@@ -66,7 +66,7 @@ const Reservation = () => {
         <div className="text-white">
             <HeadComponent />
             <div className="mt-6 flex flex-col justify-center items-center">
-                <h1 className="font-bold md:text-3xl text-2xl">{message}</h1>
+                <h1 className="font-bold md:text-3xl text-2xl text-center">{message}</h1>
                <div className="md:flex items-center md:space-x-10 mt-10">
                    <div className=" flex flex-col items-center justify-center space-y-8 mb-4">
                        <img src={reservation} className="w-80 md:w-96" alt=""/>

@@ -14,7 +14,7 @@ const HeadComponent = () => {
     return(
         <div className="flex justify-between items-center p-4 relative">
             <div className="">
-                <img src={logo} alt="" className="mx-auto"/>
+                <img src={logo} alt="" className="mx-auto w-16 md:w-auto"/>
             </div>
             <div onClick={() => {
                 auth.logout()
