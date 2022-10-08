@@ -60,7 +60,7 @@ const Background = () => {
                         color: "#0364d2",
                         distance: 140,
                         enable: true,
-                        opacity: 0.4,
+                        opacity: 0.3,
                         width: 1,
                     },
                     collisions: {
@@ -81,16 +81,16 @@ const Background = () => {
                             enable: true,
                             area: 1000,
                         },
-                        value: 80,
+                        value: 70,
                     },
                     opacity: {
-                        value: 0.5,
+                        value: 0.3,
                     },
                     shape: {
                             type: "circle",
                     },
                     size: {
-                        value: { min: 1, max: 5 },
+                        value: { min: 1, max: 4 },
                     },
                 },
                 detectRetina: true,

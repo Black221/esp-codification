@@ -1,29 +1,25 @@
-import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import HeadComponent from '../components/HeadComponent';
+import React, {useEffect, useState} from 'react';
+import HeadComponent from "../components/HeadComponent";
 import ListItem from "../components/ListItem";
+import {useAuthStateContext} from "../context/AuthContextProvider";
 import axios from "axios";
 import {HOST, PORT} from "../config/host";
-import {useAuthStateContext} from "../context/AuthContextProvider";
-import {useStateContext} from "../context/ContexProvider";
 
-const Home = () => {
 
-    const navigate = useNavigate();
+const Admin = () => {
+
     const [pav, setPav] = useState("A");
     const [rooms, setRooms] = useState([]);
     const [choice, setChoice] = useState("");
     const [members, setMembers] = useState([]);
-    const [view, setView] = useState("")
     const [level, setLevel] = useState("")
+    const [selectedRoom, setSelectedRoom] = useState([]);
 
-    const {roomReserved, setRoomReserved} = useStateContext();
     const auth = useAuthStateContext();
 
     const fetchRooms = () => {
         if (auth.user)
-            axios.post(`http://${HOST}:${PORT}/chambre/getChambre/${auth.user.num_carte}`,
-                {pavillon: pav},
+            axios.get(`http://${HOST}:${PORT}/chambre/getAllChambres`,
                 {headers: {  Authorization : `Bearer ${auth.user.token}`} })
                 .then((res) => {
                     console.log(res.data)
@@ -46,34 +42,21 @@ const Home = () => {
             })
     }
 
-    const handleReserve = () => {
-
-        if (choice) {
-            axios.post(`http://${HOST}:${PORT}/reservation/reserver/${choice}`,
-                {num_carte: auth.user.num_carte},
-                {headers: {Authorization: `Bearer ${auth.user.token}`}})
-                .then(() => {
-                    setRoomReserved(rooms.filter((room) => (room._id === choice))[0]);
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
-        }
-    }
+    useEffect(() => {
+            fetchRooms();
+    }, []);
 
     useEffect(() => {
-        fetchRooms(pav)
-    }, [pav]);
+        setSelectedRoom(rooms.filter(({pavillon}) => (pavillon === pav)).sort((a,b) => {
+            return a.numero - b.numero
+        }))
+    }, [pav, rooms])
+
 
     useEffect(() => {
         if (choice)
             fetchMembers(choice)
     }, [choice]);
-
-    useEffect(() => {
-        if (roomReserved)
-            navigate('/reservation');
-    }, [roomReserved]);
 
     const activeClass = "whitespace-nowrap p-5 py-2 border border-orange-500 rounded bg-orange-600";
     const defaultClass = "whitespace-nowrap p-5 py-2 border border-orange-500 rounded";
@@ -111,17 +94,9 @@ const Home = () => {
                             {pav !== "F" &&  <option value="3">3éme étage</option>}
                             {pav === "G" &&  <option value="4">4éme étage</option>}
                         </select>
-                        <select  className="bg-[rgba(0,0,0,0.5)] p-2 py-1 rounded cursor-pointer"
-                                 onChange={(e) => setView(e.target.value)}
-                                 value={view}>
-                            <option value="">Choisir vue</option>
-                            <option value="campus">Sur campus</option>
-                            <option value="mer">Sur mer</option>
-                            <option value="autre">Sur autre</option>
-                        </select>
                         <select  className="bg-[rgba(0,0,0,0.5)] p-2 py-1 rounded cursor-pointer" value={choice} onChange={(e) => setChoice(e.target.value)}>
                             <option value="">Choisir chambre</option>
-                            {rooms[0] && rooms.filter(({etage, vue}) => ((etage === level || level === "") && (view === vue || view === ""))).map((room) => (
+                            {selectedRoom[0] && selectedRoom.filter(({etage, vue}) => ((etage === level || level === ""))).map((room) => (
                                 <option key={room.numero} value={room._id}>{room.numero}</option>
                             ))}
                         </select>
@@ -130,14 +105,11 @@ const Home = () => {
                 <div className="mt-10 md:mt-20 w-screen">
                     <div className="text-center text-red-500">
                     </div>
-                    <ListItem chambre={rooms.filter((room) => (room._id === choice))[0]} members={members} />
-                </div>
-                <div className=" mt-6 space-x-3">
-                    <button disabled={!choice} onClick={handleReserve} className="cursor-pointer py-1 px-6 border rounded-full">Réserver</button>
+                    <ListItem chambre={selectedRoom.filter((room) => (room._id === choice))[0]} members={members} />
                 </div>
             </div>
         </div>
     )
 }
 
-export default Home;
+export default Admin;

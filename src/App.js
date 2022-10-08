@@ -10,6 +10,8 @@ import {useAuthStateContext} from "./context/AuthContextProvider";
 import {RequireAuth} from "./guards/AuthGard";
 import {useStateContext} from "./context/ContexProvider";
 import Footer from "./components/Footer";
+import Admin from "./pages/Admin";
+import {RequireAdmin} from "./guards/AdminGuard";
 
 function App() {
 
@@ -46,6 +48,11 @@ function App() {
                        </RequireAuth>} />
                        <Route path="/reservation" element={<RequireAuth>
                            <Reservation />
+                       </RequireAuth>} />
+                       <Route path="/admin" element={<RequireAuth>
+                           <RequireAdmin>
+                               <Admin />
+                           </RequireAdmin>
                        </RequireAuth>} />
                    </Routes>
                </BrowserRouter>

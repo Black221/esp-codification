@@ -10,6 +10,7 @@ import {FiTwitter} from "react-icons/fi";
 import {RiInstagramLine} from "react-icons/ri";
 import {HOST, PORT} from "../config/host";
 import emailJs from '@emailjs/browser';
+import {useAuthStateContext} from "../context/AuthContextProvider";
 
 
 const Register = () => {
@@ -24,6 +25,7 @@ const Register = () => {
     const [canConnect, setCanConnect] = useState(false)
     // const [messagePass, setMessagePass] = useState("");
 
+    const auth = useAuthStateContext();
     const randPassword = () => {
         let password = "";
         for (let i = 0; i <= 4; i++) {
@@ -86,7 +88,9 @@ const Register = () => {
             })
     }, [password]);
 
-
+    useEffect(() => {
+        auth.logout();
+    }, []);
 
     return (
         <div className=" min-h-screen flex items-center justify-center">
