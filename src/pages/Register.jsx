@@ -100,11 +100,11 @@ const Register = () => {
                 <div className="mt-4 mb-4 md:mb-10 ">
                     <img src={logo} alt="" className="mx-auto"/>
                 </div>
-                {message && <div className="text-red-500 text-center">
+                {!canConnect && message && <div className="text-red-500 text-center">
                     {message}
                 </div>}
                 <form className="p-4  md:px-16 space-y-10 text-white" onSubmit={handleSubmit}>
-                    <div className="relative flex">
+                    {!canConnect && (<><div className="relative flex">
                         <input type="text"
                                id="num"
                                value={numCarte}
@@ -125,16 +125,16 @@ const Register = () => {
                                peer-focus:-translate-y-6 ">
                             Numéro de la carte étudiant</label>
                     </div>
-                    <div className="relative flex">
+                        <div className="relative flex">
                         <input type="email"
-                               id="email"
-                               value={email}
-                               onChange={(e) => setEmail(e.target.value)}
-                               className=" w-72 md:block p-1 md:w-[320px] peer appearance-none bg-transparent focus:outline focus:outline-0 border-b-2 border-white"
-                               placeholder=""
+                        id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className=" w-72 md:block p-1 md:w-[320px] peer appearance-none bg-transparent focus:outline focus:outline-0 border-b-2 border-white"
+                        placeholder=""
                         />
                         <label htmlFor="email"
-                               className="absolute italic text-[18px]
+                        className="absolute italic text-[18px]
                                text-gray-500 duration-300
                                transform -translate-y-4 scale-75 z-10
                                origin-[0] peer-focus:px-0
@@ -144,8 +144,8 @@ const Register = () => {
                                peer-placeholder-shown:top-1/2
                                peer-focus:top-2 peer-focus:scale-75
                                peer-focus:-translate-y-6 ">
-                            Email</label>
-                    </div>
+                        Email</label>
+                        </div></>)}
                     {!canConnect && !isLoading && <div className="text-center">
                         <input type="submit"
                                value="S'inscrire"

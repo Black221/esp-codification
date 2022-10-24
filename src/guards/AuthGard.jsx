@@ -13,6 +13,8 @@ export const RequireAuth = ({children}) => {
     if ( !auth.user && !access)
         return <Navigate to='/connexion' />
 
+    if (auth.user.admin)
+        return <Navigate to='/admin' />
 
     return children
 }

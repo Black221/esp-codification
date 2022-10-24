@@ -49,11 +49,16 @@ function App() {
                        <Route path="/reservation" element={<RequireAuth>
                            <Reservation />
                        </RequireAuth>} />
-                       <Route path="/admin" element={<RequireAuth>
+                       <Route path="/admin" element={
                            <RequireAdmin>
                                <Admin />
                            </RequireAdmin>
-                       </RequireAuth>} />
+                       } />
+                       <Route path="*" element={
+                           <div>
+                               <h1 className="text-white text-[40px] text-center pt-24 font-bold">erreur 404</h1>
+                           </div>
+                       } />
                    </Routes>
                </BrowserRouter>
            </div>

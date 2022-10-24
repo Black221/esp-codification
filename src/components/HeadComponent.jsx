@@ -17,9 +17,7 @@ const HeadComponent = () => {
                 <img src={logo} alt="" className="mx-auto w-16 md:w-auto"/>
             </div>
             <div className="flex space-x-3 items-center">
-                {auth.user.admin && <span className="cursor-pointer text-cyan-400 font-semibold text-sm" onClick={() => {
-                    navigate("/admin")
-                }}>Espace admin  </span>}
+
                 <div onClick={() => {
                     auth.logout()
                     navigate("/connexion")

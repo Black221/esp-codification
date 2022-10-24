@@ -11,7 +11,7 @@ import {HOST, PORT} from "../config/host";
 import {useAuthStateContext} from "../context/AuthContextProvider";
 import {useStateContext} from "../context/ContexProvider";
 import loading from "../assets/loading.gif";
-
+import {admin, adminPassword} from "../data/dummy.js"
 
 const Login = () => {
 
@@ -21,7 +21,7 @@ const Login = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [message, setMessage] = useState("");
     const auth = useAuthStateContext();
-    const {roomReserved,setRoomReserved, setCodifier} = useStateContext()
+    const {roomReserved,setRoomReserved, setCodifier} = useStateContext();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -30,42 +30,72 @@ const Login = () => {
             return null;
         }
         setIsLoading(true);
-        axios.post(`http://${HOST}:${PORT}/compte/connexion`,
-            {num_carte, password},
+        if (num_carte !== admin)
+            axios.post(`http://${HOST}:${PORT}/compte/connexion`,
+                {num_carte, password},
 
-        ).then((res) => {
-            console.log(res.data)
-            if (res.data.code ===400) {
-                setIsLoading(false)
-                setMessage(res.data.msg)
-            }
-            else if (res.data.code === 200) {
-                auth.login(res.data.user);
-                setRoomReserved(res.data.chambre);
-                setCodifier(res.data.codifier);
-                localStorage.setItem('room', JSON.stringify(res.data.chambre));
-                localStorage.setItem('codifier', JSON.stringify(res.data.codifier));
-            }
-            else if (res.data.code === 500) {
-                setIsLoading(false)
-                setMessage(res.data.msg)
-            }
-            else
+            ).then((res) => {
+                console.log(res.data)
+                if (res.data.code ===400) {
+                    setIsLoading(false)
+                    setMessage(res.data.msg)
+                }
+                else if (res.data.code === 200) {
+                    auth.login(res.data.user);
+                    setRoomReserved(res.data.chambre);
+                    setCodifier(res.data.codifier);
+                    localStorage.setItem('room', JSON.stringify(res.data.chambre));
+                    localStorage.setItem('codifier', JSON.stringify(res.data.codifier));
+                }
+                else if (res.data.code === 500) {
+                    setIsLoading(false)
+                    setMessage(res.data.msg)
+                }
+                else
+                    setMessage("Une erreur est survenue, veuillez réessayer plus tard")
+            }).catch((error) => {
+                console.log(error)
                 setMessage("Une erreur est survenue, veuillez réessayer plus tard")
-        }).catch((error) => {
-            console.log(error)
-            setMessage("Une erreur est survenue, veuillez réessayer plus tard")
-            setIsLoading(false)
-        })
+                setIsLoading(false)
+            })
+        else
+            axios.post(`http://${HOST}:${PORT}/admin/connexion`, {num_carte, password})
+                .then((res) => {
+                    console.log(res.data)
+                    if (res.data.code ===400) {
+                        setIsLoading(false)
+                        setMessage(res.data.msg)
+                    }
+                    else if (res.data.code === 200) {
+                        auth.login(res.data.user);
+                        localStorage.setItem('room', null);
+                        localStorage.setItem('codifier', null);
+                    }
+                    else if (res.data.code === 500) {
+                        setIsLoading(false)
+                        setMessage(res.data.msg)
+                    }
+                    else
+                        setMessage("Une erreur est survenue, veuillez réessayer plus tard")
+                }).catch((error) => {
+                console.log(error)
+                setMessage("Une erreur est survenue, veuillez réessayer plus tard")
+                setIsLoading(false)
+            })
+
     }
 
     useEffect(() => {
         if (auth.user) {
             setIsLoading(false)
-            if (roomReserved)
-                navigate('/reservation')
-            else
-                navigate('/accueil')
+            if (auth.user.admin)
+                navigate('/admin');
+            else {
+                if (roomReserved)
+                    navigate('/reservation')
+                else
+                    navigate('/accueil')
+            }
         }
         console.log(auth.user)
     }, [auth.user, roomReserved]);
