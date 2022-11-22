@@ -1,12 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import HeadComponent from "../components/HeadComponent";
-import ListItem from "../components/ListItem";
-import {useAuthStateContext} from "../context/AuthContextProvider";
+import HeadComponent from "../../components/HeadComponent";
+import ListItem from "../../components/ListItem";
+import {useAuthStateContext} from "../../context/AuthContextProvider";
 import axios from "axios";
-import {HOST, PORT} from "../config/host";
+import {HOST, PORT} from "../../config/host";
+import EtudiantList from "../../components/Admin/EtudiantList";
+import { createColumnHelper } from "@tanstack/react-table";
+import {startCase} from "lodash";
+import ValidationColumn from "../../components/Admin/ValidationColumn";
+import Notification from "../../components/Notification";
+import {useStateContext} from "../../context/ContexProvider";
+const columnHelper = createColumnHelper();
 
 
 const Admin = () => {
+
 
     const [pav, setPav] = useState("A");
     const [rooms, setRooms] = useState([]);
@@ -16,17 +24,44 @@ const Admin = () => {
     const [selectedRoom, setSelectedRoom] = useState([]);
 
     const auth = useAuthStateContext();
+    const {showNotification} = useStateContext();
+
+    const [etudiants, setEtudiants] = useState([]);
+    const [columns, setColumns] = useState([]);
+
+    const getEtudiants = () => {
+        axios.get(`http://${HOST}:${PORT}/etudiant/all`,
+            {headers: {  Authorization : `Bearer ${auth.user.token}`}}
+        ).then((res) => {
+            res.data.etudiant &&
+            setEtudiants(res.data.etudiant);
+            res.data.etudiant &&
+            setColumns([
+                ...Object.keys(res.data.etudiant[0]).map((key) =>
+                columnHelper.accessor(key, {
+                    cell: (info) => info.getValue(),
+                    header: startCase(key),
+                    id: key,
+                })
+            ), {
+                    header: "Actions",
+                    id: "actions",
+                    accessorKey : "actions",
+                    cell: ({row}) => <ValidationColumn num_carte={row.original.num_carte} />
+            }])
+        })
+    }
+
+
 
     const fetchRooms = () => {
         if (auth.user)
             axios.get(`http://${HOST}:${PORT}/chambre/getAllChambres`,
                 {headers: {  Authorization : `Bearer ${auth.user.token}`} })
                 .then((res) => {
-                    console.log(res.data)
                     setRooms(res.data.chambres)
                 })
                 .catch((error) => {
-                    console.log(error)
                 })
     }
 
@@ -34,22 +69,24 @@ const Admin = () => {
         axios.get(`http://${HOST}:${PORT}/chambre/getReserved/${id}`,
             {headers: {  Authorization : `Bearer ${auth.user.token}`} })
             .then((res) => {
-                console.log(res.data)
                 setMembers(res.data.membres)
             })
             .catch((error) => {
-                console.log(error)
             })
     }
 
     useEffect(() => {
             fetchRooms();
+            getEtudiants();
+
     }, []);
 
+
     useEffect(() => {
-        setSelectedRoom(rooms.filter(({pavillon}) => (pavillon === pav)).sort((a,b) => {
-            return a.numero - b.numero
-        }))
+        if (rooms)
+            setSelectedRoom(rooms.filter(({pavillon}) => (pavillon === pav)).sort((a,b) => {
+                return a.numero - b.numero
+            }))
     }, [pav, rooms])
 
 
@@ -58,12 +95,17 @@ const Admin = () => {
             fetchMembers(choice)
     }, [choice]);
 
+
     const activeClass = "whitespace-nowrap p-5 py-2 border border-orange-500 rounded bg-orange-600";
     const defaultClass = "whitespace-nowrap p-5 py-2 border border-orange-500 rounded";
 
     return (
         <div className="text-white overflow-hidden">
             <HeadComponent />
+            {showNotification && <Notification message={
+                <>Êtes-vous sûr de vouloir <br/>
+                    continuer ? </>
+            } user={'admin'}/>}
             <div className="w-screen mt-6 flex flex-col justify-center items-center">
                 <div className="w-full flex flex-col items-center justify-center space-y-8 ">
                     <div className="p-6 w-full md:w-auto flex md:block  overflow-x-scroll md:overflow-hidden space-x-8 font-bold text-xl">
@@ -107,6 +149,9 @@ const Admin = () => {
                     </div>
                     <ListItem chambre={selectedRoom.filter((room) => (room._id === choice))[0]} members={members} />
                 </div>
+            </div>
+            <div className="mt-20">
+                <EtudiantList data={etudiants} columns={columns}/>
             </div>
         </div>
     )

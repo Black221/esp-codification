@@ -6,6 +6,7 @@ import axios from "axios";
 import {HOST, PORT} from "../config/host";
 import {useAuthStateContext} from "../context/AuthContextProvider";
 import {useStateContext} from "../context/ContexProvider";
+import Notification from "../components/Notification";
 
 const Home = () => {
 
@@ -17,7 +18,7 @@ const Home = () => {
     const [view, setView] = useState("")
     const [level, setLevel] = useState("")
 
-    const {roomReserved, setRoomReserved} = useStateContext();
+    const {roomReserved, setRoomReserved, showNotification, setShowNotification,isNotificationValidate, setIsNotificationValidate} = useStateContext();
     const auth = useAuthStateContext();
 
     const fetchRooms = () => {
@@ -26,11 +27,9 @@ const Home = () => {
                 {pavillon: pav},
                 {headers: {  Authorization : `Bearer ${auth.user.token}`} })
                 .then((res) => {
-                    console.log(res.data)
                     setRooms(res.data.chambres)
                 })
                 .catch((error) => {
-                    console.log(error)
                 })
     }
 
@@ -38,11 +37,9 @@ const Home = () => {
         axios.get(`http://${HOST}:${PORT}/chambre/getReserved/${id}`,
             {headers: {  Authorization : `Bearer ${auth.user.token}`} })
             .then((res) => {
-                console.log(res.data)
                 setMembers(res.data.membres)
             })
             .catch((error) => {
-                console.log(error)
             })
     }
 
@@ -56,10 +53,18 @@ const Home = () => {
                     setRoomReserved(rooms.filter((room) => (room._id === choice))[0]);
                 })
                 .catch((error) => {
-                    console.log(error)
                 })
         }
     }
+
+    useEffect(() => {
+        if (isNotificationValidate)
+            handleReserve();
+        setIsNotificationValidate(null);
+        setShowNotification(false);
+
+    }, [isNotificationValidate]);
+
 
     useEffect(() => {
         fetchRooms(pav)
@@ -81,6 +86,10 @@ const Home = () => {
     return (
         <div className="text-white overflow-hidden">
             <HeadComponent />
+            {showNotification && <Notification message={
+                <>Êtes-vous sûr de vouloir <br/>
+                    continuer ? </>
+            } user={'etudiant'}/>}
             <div className="w-screen mt-6 flex flex-col justify-center items-center">
                 <div className="w-full flex flex-col items-center justify-center space-y-8 ">
                     <div className="p-6 w-full md:w-auto flex md:block  overflow-x-scroll md:overflow-hidden space-x-8 font-bold text-xl">
@@ -133,7 +142,9 @@ const Home = () => {
                     <ListItem chambre={rooms.filter((room) => (room._id === choice))[0]} members={members} />
                 </div>
                 <div className=" mt-6 space-x-3">
-                    <button disabled={!choice} onClick={handleReserve} className="cursor-pointer py-1 px-6 border rounded-full">Réserver</button>
+                    <button disabled={!choice} onClick={() => {
+                        setShowNotification(true);
+                    }} className="cursor-pointer py-1 px-6 border rounded-full">Réserver</button>
                 </div>
             </div>
         </div>

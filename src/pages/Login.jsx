@@ -11,7 +11,7 @@ import {HOST, PORT} from "../config/host";
 import {useAuthStateContext} from "../context/AuthContextProvider";
 import {useStateContext} from "../context/ContexProvider";
 import loading from "../assets/loading.gif";
-import {admin, adminPassword} from "../data/dummy.js"
+import {admin} from "../data/dummy.js"
 
 const Login = () => {
 
@@ -35,7 +35,6 @@ const Login = () => {
                 {num_carte, password},
 
             ).then((res) => {
-                console.log(res.data)
                 if (res.data.code ===400) {
                     setIsLoading(false)
                     setMessage(res.data.msg)
@@ -54,14 +53,12 @@ const Login = () => {
                 else
                     setMessage("Une erreur est survenue, veuillez réessayer plus tard")
             }).catch((error) => {
-                console.log(error)
                 setMessage("Une erreur est survenue, veuillez réessayer plus tard")
                 setIsLoading(false)
             })
         else
             axios.post(`http://${HOST}:${PORT}/admin/connexion`, {num_carte, password})
                 .then((res) => {
-                    console.log(res.data)
                     if (res.data.code ===400) {
                         setIsLoading(false)
                         setMessage(res.data.msg)
@@ -78,7 +75,6 @@ const Login = () => {
                     else
                         setMessage("Une erreur est survenue, veuillez réessayer plus tard")
                 }).catch((error) => {
-                console.log(error)
                 setMessage("Une erreur est survenue, veuillez réessayer plus tard")
                 setIsLoading(false)
             })
@@ -97,7 +93,6 @@ const Login = () => {
                     navigate('/accueil')
             }
         }
-        console.log(auth.user)
     }, [auth.user, roomReserved]);
 
     useEffect(() => {

@@ -10,22 +10,35 @@ import {useAuthStateContext} from "./context/AuthContextProvider";
 import {RequireAuth} from "./guards/AuthGard";
 import {useStateContext} from "./context/ContexProvider";
 import Footer from "./components/Footer";
-import Admin from "./pages/Admin";
+import Admin from "./pages/Admin/Admin";
 import {RequireAdmin} from "./guards/AdminGuard";
+import axios from "axios";
+import {HOST, PORT} from "./config/host";
 
 function App() {
+
 
     const auth = useAuthStateContext();
     const {setRoomReserved, setCodifier} = useStateContext();
 
+
     useEffect(() => {
         const access = JSON.parse(localStorage.getItem('access-key'));
         setRoomReserved (JSON.parse(localStorage.getItem('room')));
-        setCodifier(JSON.parse(localStorage.getItem('codifier')));
 
-        if (!auth.user && access && access.token)
+        if (!auth.user && access && access.token) {
+            axios.get(`http://${HOST}:${PORT}/compte/getCompte/${access.num_carte}`)
+                .then((res) => {
+                    if (res.data.code === 200)
+                        setCodifier(res.data.compte.codifier)
+                    else
+                        setCodifier(false);
+                })
+                .catch((err) => {
+
+                })
             auth.login(access)
-        else if (!auth.user)
+        } else if (!auth.user)
             auth.logout();
 
     }, [auth.user])
@@ -62,7 +75,7 @@ function App() {
                    </Routes>
                </BrowserRouter>
            </div>
-           {auth.user && <  Footer />}
+           {auth.user && <Footer />}
        </div>
     );
 }

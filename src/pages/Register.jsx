@@ -9,7 +9,7 @@ import {ImYoutube2} from 'react-icons/im'
 import {FiTwitter} from "react-icons/fi";
 import {RiInstagramLine} from "react-icons/ri";
 import {HOST, PORT} from "../config/host";
-import emailJs from '@emailjs/browser';
+// import emailJs from '@emailjs/browser';
 import {useAuthStateContext} from "../context/AuthContextProvider";
 
 
@@ -18,75 +18,76 @@ const Register = () => {
     const navigate = useNavigate();
     const [numCarte, setNumCarte] = useState("");
     const [message, setMessage] = useState("");
-    const [password, setPassword] = useState("")
-    const [email, setEmail] = useState("");
-    const CHARACTER = "0123456789abcdefghijklmnopqrstuvwxyz!@#&*ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const [password, setPassword] = useState("");
+    // const CHARACTER = "0123456789abcdefghijklmnopqrstuvwxyz!@#&*ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const [isLoading, setIsLoading] = useState(false)
     const [canConnect, setCanConnect] = useState(false)
     // const [messagePass, setMessagePass] = useState("");
 
     const auth = useAuthStateContext();
-    const randPassword = () => {
-        let password = "";
-        for (let i = 0; i <= 4; i++) {
-            let randomNumber = Math.floor(Math.random() * CHARACTER.length);
-            password += CHARACTER.substring(randomNumber, randomNumber +1);
-        }
-        return numCarte+password;
+    // const randPassword = () => {
+    //     let password = "";
+    //     for (let i = 0; i <= 4; i++) {
+    //         let randomNumber = Math.floor(Math.random() * CHARACTER.length);
+    //         password += CHARACTER.substring(randomNumber, randomNumber +1);
+    //     }
+    //     return numCarte+password;
+    // }
+
+    const testPassword = (password) => {
+        return password.length > 6;
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setPassword(randPassword());
         if (!numCarte) {
-            setMessage("Veuillez saisir votre numéro de catre étudiant.")
+            setMessage("Veuillez saisir votre numéro de carte étudiant.")
             return null;
         }
-        setIsLoading(true)
+        if (!testPassword(password)) {
+            setMessage("Mot de passe faible.")
+            return null
+        }
+        setIsLoading(true);
+        axios.post(`http://${HOST}:${PORT}/compte/inscription/${numCarte}`,
+            {password},
+        ).then((res) => {
+            if (res.data.code ===400)
+                setMessage(res.data.msg)
+            else if (res.data.code === 200)
+                if (res.data.msg)
+                    setMessage(res.data.msg)
+                else {
+                    setCanConnect(true);
+                    // sendEmail(res.data.etudiant, password)
+                }
+            else
+                setMessage("Une erreur est survenue, veuillez réessayer plus tard")
+            setIsLoading(false)
+        }).catch((error) => {
+            setIsLoading(false)
+            setMessage("Une erreur est survenue, veuillez réessayer plus tard")
+        })
     }
 
-    const sendEmail = (res, message) => {
+    // const sendEmail = (res, message) => {
+    //
+    //     emailJs.send(
+    //         'service_r6hou73',
+    //         'codification_56cli1k',
+    //         {
+    //             to_name: `${res.prenom} ${res.nom}`,
+    //             to_email: password,
+    //             message
+    //         },
+    //         'BCidLL6hrWDmpzwyN')
+    //         .then((result) => {
+    //             console.log(result.text);
+    //         }, (error) => {
+    //             console.log(error.text);
+    //         });
+    // };
 
-        emailJs.send(
-            'service_r6hou73',
-            'codification_56cli1k',
-            {
-                to_name: `${res.prenom} ${res.nom}`,
-                to_email: email,
-                message
-            },
-            'BCidLL6hrWDmpzwyN')
-            .then((result) => {
-                console.log(result.text);
-            }, (error) => {
-                console.log(error.text);
-            });
-    };
-
-    useEffect(() => {
-        if (password)
-            axios.post(`http://${HOST}:${PORT}/compte/inscription/${numCarte}`,
-                {email,password},
-            ).then((res) => {
-                console.log(res.data)
-                if (res.data.code ===400)
-                    setMessage(res.data.msg)
-                else if (res.data.code === 200)
-                    if (res.data.msg)
-                        setMessage(res.data.msg)
-                    else {
-                        setCanConnect(true);
-                        sendEmail(res.data.etudiant, password)
-                    }
-                else
-                    setMessage("Une erreur est survenue, veuillez réessayer plus tard")
-                setIsLoading(false)
-            }).catch((error) => {
-                console.log(error)
-                setIsLoading(false)
-                setMessage("Une erreur est survenue, veuillez réessayer plus tard")
-            })
-    }, [password]);
 
     useEffect(() => {
         auth.logout();
@@ -123,17 +124,17 @@ const Register = () => {
                                peer-placeholder-shown:top-1/2
                                peer-focus:top-2 peer-focus:scale-75
                                peer-focus:-translate-y-6 ">
-                            Numéro de la carte étudiant</label>
+                            Numéro carte étudiant</label>
                     </div>
                         <div className="relative flex">
-                        <input type="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        <input type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         className=" w-72 md:block p-1 md:w-[320px] peer appearance-none bg-transparent focus:outline focus:outline-0 border-b-2 border-white"
                         placeholder=""
                         />
-                        <label htmlFor="email"
+                        <label htmlFor="password"
                         className="absolute italic text-[18px]
                                text-gray-500 duration-300
                                transform -translate-y-4 scale-75 z-10
@@ -144,7 +145,7 @@ const Register = () => {
                                peer-placeholder-shown:top-1/2
                                peer-focus:top-2 peer-focus:scale-75
                                peer-focus:-translate-y-6 ">
-                        Email</label>
+                        Mot de passe</label>
                         </div></>)}
                     {!canConnect && !isLoading && <div className="text-center">
                         <input type="submit"
@@ -153,13 +154,13 @@ const Register = () => {
                         <br/>
                         <span className="mt-2">ou</span>
                     </div>}
-                    {canConnect && !isLoading && <p className="text-center text-green-500">
-                        Inscription réussie !<br/>Veuillez consulter votre boîte mail.
+                    {canConnect && !isLoading && <p className="text-center text-green-500 md:w-auto w-64 md:h-auto ">
+                        Inscription réussie !
                     </p>}
                     {isLoading && <div><img src={loading} className="w-20 mx-auto rounded-full" alt=""/></div>}
 
                 </form>
-                <div className="text-center text-white">
+                <div className="text-center text-white mb-10">
                     <span className="text-cyan-400 font-semibold cursor-pointer" onClick={() => navigate('/connexion')}>Se connecter.</span>
                 </div>
             </div>

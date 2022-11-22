@@ -14,21 +14,22 @@ const Reservation = () => {
     const [message, setMessages] = useState("Chambre réservée :")
 
     const navigate = useNavigate();
-    const {roomReserved, setRoomReserved, codifier, setCodifier} = useStateContext();
+    const {roomReserved, setRoomReserved, codifier} = useStateContext();
     const auth = useAuthStateContext();
 
     const fetchMembers = (id) => {
         axios.get(`http://${HOST}:${PORT}/chambre/getReserved/${id}`,
             {headers: {Authorization: `Bearer ${auth.user.token}`}})
             .then((res) => {
-                console.log(res.data)
                 setMembers(res.data.membres)
             })
             .catch((error) => {
-                console.log(error)
             })
     }
 
+
+
+/*
     const handleValidate = () => {
         axios.post(`http://${HOST}:${PORT}/reservation/valider/${auth.user.num_carte}`,
             {},
@@ -55,10 +56,12 @@ const Reservation = () => {
                 console.log(error)
             })
     }
-
+*/
     useEffect(() => {
         if (roomReserved)
             fetchMembers(roomReserved._id)
+        else
+            navigate('/accueil')
     }, [roomReserved]);
 
 
@@ -73,14 +76,14 @@ const Reservation = () => {
                    </div>
                    <div className="space-x-3 text-center">
                        {roomReserved && members && <ListItem chambre={roomReserved} members={members}/>}
-                       {!codifier && <div className=" mt-6 space-x-3">
-                           <button onClick={handleValidate}
-                                   className="cursor-pointer py-1 px-6 border border-green-500 text-green-400 rounded-full">Valider
-                           </button>
-                           <button onClick={handleRemove}
-                                   className="cursor-pointer py-1 px-6 border border-red-500 text-red-500 rounded-full">Annuler
-                           </button>
-                       </div>}
+                   {/*    {!codifier && <div className=" mt-6 space-x-3">*/}
+                   {/*        <button onClick={handleValidate}*/}
+                   {/*                className="cursor-pointer py-1 px-6 border border-green-500 text-green-400 rounded-full">Valider*/}
+                   {/*        </button>*/}
+                   {/*        <button onClick={handleRemove}*/}
+                   {/*                className="cursor-pointer py-1 px-6 border border-red-500 text-red-500 rounded-full">Annuler*/}
+                   {/*        </button>*/}
+                   {/*    </div>}*/}
                    </div>
                </div>
 
