@@ -8,7 +8,7 @@ import loading from '../assets/loading.gif';
 import {ImYoutube2} from 'react-icons/im'
 import {FiTwitter} from "react-icons/fi";
 import {RiInstagramLine} from "react-icons/ri";
-import {HOST, PORT} from "../config/host";
+import {API, HOST, PORT} from "../config/host";
 // import emailJs from '@emailjs/browser';
 import {useAuthStateContext} from "../context/AuthContextProvider";
 
@@ -49,7 +49,7 @@ const Register = () => {
             return null
         }
         setIsLoading(true);
-        axios.post(`http://${HOST}:${PORT}/compte/inscription/${numCarte}`,
+        axios.post(`${API}/compte/inscription/${numCarte}`,
             {password},
         ).then((res) => {
             if (res.data.code ===400)

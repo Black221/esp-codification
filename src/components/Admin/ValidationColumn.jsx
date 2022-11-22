@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import {HOST, PORT} from "../../config/host";
+import {API} from "../../config/host";
 // import {useStateContext} from "../../context/ContexProvider";
 import {useAuthStateContext} from "../../context/AuthContextProvider";
 import {useStateContext} from "../../context/ContexProvider";
@@ -22,7 +22,7 @@ const ValidationColumn = ({num_carte}) => {
     }, [num_carte]);
 
     const getInfo = () => {
-        axios.get(`http://${HOST}:${PORT}/compte/getCompte/${num_carte}`,
+        axios.get(`${API}/compte/getCompte/${num_carte}`,
             {headers: {Authorization: `Bearer ${auth.user.token}`}})
             .then((res) => {
                 if (res.data.code === 500) {
@@ -55,7 +55,7 @@ const ValidationColumn = ({num_carte}) => {
 
 
     const OnValidate = () => {
-        axios.post(`http://${HOST}:${PORT}/reservation/valider/${num_carte}`,
+        axios.post(`${API}/reservation/valider/${num_carte}`,
             {},
             {headers: {Authorization: `Bearer ${auth.user.token}`}})
             .then((res) => {
@@ -66,7 +66,7 @@ const ValidationColumn = ({num_carte}) => {
     }
 
     const OnRemove = () => {
-        axios.post(`http://${HOST}:${PORT}/reservation/annuler/${num_carte}`,
+        axios.post(`${API}/reservation/annuler/${num_carte}`,
             {},
             {headers: {Authorization: `Bearer ${auth.user.token}`}})
             .then((res) => {

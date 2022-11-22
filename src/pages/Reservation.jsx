@@ -3,7 +3,7 @@ import HeadComponent from '../components/HeadComponent';
 import ListItem from "../components/ListItem";
 import reservation from '../assets/reservation.png';
 import axios from "axios";
-import {HOST, PORT} from "../config/host";
+import {API, HOST, PORT} from "../config/host";
 import {useAuthStateContext} from "../context/AuthContextProvider";
 import {useStateContext} from "../context/ContexProvider";
 import {useNavigate} from "react-router-dom";
@@ -18,7 +18,7 @@ const Reservation = () => {
     const auth = useAuthStateContext();
 
     const fetchMembers = (id) => {
-        axios.get(`http://${HOST}:${PORT}/chambre/getReserved/${id}`,
+        axios.get(`${API}/chambre/getReserved/${id}`,
             {headers: {Authorization: `Bearer ${auth.user.token}`}})
             .then((res) => {
                 setMembers(res.data.membres)

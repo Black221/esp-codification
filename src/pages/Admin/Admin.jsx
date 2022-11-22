@@ -3,7 +3,7 @@ import HeadComponent from "../../components/HeadComponent";
 import ListItem from "../../components/ListItem";
 import {useAuthStateContext} from "../../context/AuthContextProvider";
 import axios from "axios";
-import {HOST, PORT} from "../../config/host";
+import {API, HOST, PORT} from "../../config/host";
 import EtudiantList from "../../components/Admin/EtudiantList";
 import { createColumnHelper } from "@tanstack/react-table";
 import {startCase} from "lodash";
@@ -30,7 +30,7 @@ const Admin = () => {
     const [columns, setColumns] = useState([]);
 
     const getEtudiants = () => {
-        axios.get(`http://${HOST}:${PORT}/etudiant/all`,
+        axios.get(`${API}/etudiant/all`,
             {headers: {  Authorization : `Bearer ${auth.user.token}`}}
         ).then((res) => {
             res.data.etudiant &&
@@ -56,7 +56,7 @@ const Admin = () => {
 
     const fetchRooms = () => {
         if (auth.user)
-            axios.get(`http://${HOST}:${PORT}/chambre/getAllChambres`,
+            axios.get(`${API}/chambre/getAllChambres`,
                 {headers: {  Authorization : `Bearer ${auth.user.token}`} })
                 .then((res) => {
                     setRooms(res.data.chambres)
@@ -66,7 +66,7 @@ const Admin = () => {
     }
 
     const fetchMembers = (id) => {
-        axios.get(`http://${HOST}:${PORT}/chambre/getReserved/${id}`,
+        axios.get(`${API}/chambre/getReserved/${id}`,
             {headers: {  Authorization : `Bearer ${auth.user.token}`} })
             .then((res) => {
                 setMembers(res.data.membres)

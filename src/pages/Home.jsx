@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import HeadComponent from '../components/HeadComponent';
 import ListItem from "../components/ListItem";
 import axios from "axios";
-import {HOST, PORT} from "../config/host";
+import {API} from "../config/host";
 import {useAuthStateContext} from "../context/AuthContextProvider";
 import {useStateContext} from "../context/ContexProvider";
 import Notification from "../components/Notification";
@@ -23,7 +23,7 @@ const Home = () => {
 
     const fetchRooms = () => {
         if (auth.user)
-            axios.post(`http://${HOST}:${PORT}/chambre/getChambre/${auth.user.num_carte}`,
+            axios.post(`${API}/chambre/getChambre/${auth.user.num_carte}`,
                 {pavillon: pav},
                 {headers: {  Authorization : `Bearer ${auth.user.token}`} })
                 .then((res) => {
@@ -34,7 +34,7 @@ const Home = () => {
     }
 
     const fetchMembers = (id) => {
-        axios.get(`http://${HOST}:${PORT}/chambre/getReserved/${id}`,
+        axios.get(`${API}/chambre/getReserved/${id}`,
             {headers: {  Authorization : `Bearer ${auth.user.token}`} })
             .then((res) => {
                 setMembers(res.data.membres)
@@ -46,7 +46,7 @@ const Home = () => {
     const handleReserve = () => {
 
         if (choice) {
-            axios.post(`http://${HOST}:${PORT}/reservation/reserver/${choice}`,
+            axios.post(`${API}/reservation/reserver/${choice}`,
                 {num_carte: auth.user.num_carte},
                 {headers: {Authorization: `Bearer ${auth.user.token}`}})
                 .then(() => {

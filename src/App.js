@@ -13,7 +13,7 @@ import Footer from "./components/Footer";
 import Admin from "./pages/Admin/Admin";
 import {RequireAdmin} from "./guards/AdminGuard";
 import axios from "axios";
-import {HOST, PORT} from "./config/host";
+import {API, HOST, PORT} from "./config/host";
 
 function App() {
 
@@ -27,7 +27,7 @@ function App() {
         setRoomReserved (JSON.parse(localStorage.getItem('room')));
 
         if (!auth.user && access && access.token) {
-            axios.get(`http://${HOST}:${PORT}/compte/getCompte/${access.num_carte}`)
+            axios.get(`${API}/compte/getCompte/${access.num_carte}`)
                 .then((res) => {
                     if (res.data.code === 200)
                         setCodifier(res.data.compte.codifier)

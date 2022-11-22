@@ -7,7 +7,7 @@ import {ImYoutube2} from 'react-icons/im'
 import {FiTwitter} from "react-icons/fi";
 import {RiInstagramLine} from "react-icons/ri";
 import axios from "axios";
-import {HOST, PORT} from "../config/host";
+import {API, HOST, PORT} from "../config/host";
 import {useAuthStateContext} from "../context/AuthContextProvider";
 import {useStateContext} from "../context/ContexProvider";
 import loading from "../assets/loading.gif";
@@ -31,7 +31,7 @@ const Login = () => {
         }
         setIsLoading(true);
         if (num_carte !== admin)
-            axios.post(`http://${HOST}:${PORT}/compte/connexion`,
+            axios.post(`${API}/compte/connexion`,
                 {num_carte, password},
 
             ).then((res) => {
@@ -57,7 +57,7 @@ const Login = () => {
                 setIsLoading(false)
             })
         else
-            axios.post(`http://${HOST}:${PORT}/admin/connexion`, {num_carte, password})
+            axios.post(`${API}/admin/connexion`, {num_carte, password})
                 .then((res) => {
                     if (res.data.code ===400) {
                         setIsLoading(false)
