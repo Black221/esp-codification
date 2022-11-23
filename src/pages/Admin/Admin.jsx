@@ -3,7 +3,7 @@ import HeadComponent from "../../components/HeadComponent";
 import ListItem from "../../components/ListItem";
 import {useAuthStateContext} from "../../context/AuthContextProvider";
 import axios from "axios";
-import {API, HOST, PORT} from "../../config/host";
+import {API} from "../../config/host";
 import EtudiantList from "../../components/Admin/EtudiantList";
 import { createColumnHelper } from "@tanstack/react-table";
 import {startCase} from "lodash";
@@ -107,8 +107,8 @@ const Admin = () => {
                     continuer ? </>
             } user={'admin'}/>}
             <div className="w-screen mt-6 flex flex-col justify-center items-center">
-                <div className="w-full flex flex-col items-center justify-center space-y-8 ">
-                    <div className="p-6 w-full md:w-auto flex md:block  overflow-x-scroll md:overflow-hidden space-x-8 font-bold text-xl">
+                <div className=" w-full flex flex-col items-center justify-center space-y-8 ">
+                    <div className="md:bg-transparent bg-[rgba(0,0,0,0.3)] p-6 w-full md:w-auto flex md:block  overflow-x-scroll md:overflow-hidden space-x-8 font-bold text-xl">
                         <button className={pav === "A" ? activeClass : defaultClass}
                                 onClick={() => setPav("A")}>
                             Pav A</button>
