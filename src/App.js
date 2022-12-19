@@ -13,7 +13,7 @@ import Footer from "./components/Footer";
 import Admin from "./pages/Admin/Admin";
 import {RequireAdmin} from "./guards/AdminGuard";
 import axios from "axios";
-import {API, HOST, PORT} from "./config/host";
+import {API} from "./config/host";
 
 function App() {
 

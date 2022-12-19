@@ -51,7 +51,7 @@ module.exports = {
                     '-15px -15px 20px #030B23FF'
                 ],
                 'login-button': [
-                    '6px 6px 4px #0C2983',
+                    '6px 6px 2px #0C2983',
                     '-6px -6px 7px #081B53'
                 ],
                 'login-blob': [

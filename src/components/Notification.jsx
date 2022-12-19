@@ -17,7 +17,7 @@ const Notification = ({message, user}) => {
                             setIsNotificationValidate(true)
                         else
                             setIsAdminNotificationValidate(true);
-                    }} className="rounded-xl border font-bold px-2 text-orange-500 border-orange-500 ">Oui</button>
+                    }} className="rounded-xl border font-bold px-2 text-green-500 border-green-400 ">Oui</button>
                     <button onClick={() => {
                         if (user !== 'admin')
                             setIsNotificationValidate(false)

@@ -13,15 +13,15 @@ const ListItem = ({chambre, members}) => {
                     </tr>
                     <tr>
                         <th scope="col" className="py-3 px-1 md:px-10">Occupants</th>
-                        <th scope="col" className="py-3 px-1 md:px-10">Departments</th>
-                        <th scope="col" className="py-3 px-1 md:px-10">Classes</th>
+                        <th scope="col" className="py-3 px-1 md:px-10">Department</th>
+                        <th scope="col" className="py-3 px-1 md:px-10">Niveau</th>
                     </tr>
                 </thead>
                 <tbody className="text-center">
                 {members && members.map((member) => (
                     <tr key={member._id} className="border-b border-gray-500">
                         <td className="py-3 px-1 md:px-6">{`${member.prenom} ${member.nom}`}</td>
-                        <td className="py-3 px-1 md:px-6">{member.departement}</td>
+                        <td className="py-3 px-1 md:px-6">{member.option}</td>
                         <td className="py-3 px-1 md:px-6">{member.niveau}</td>
                     </tr>
                 ))}

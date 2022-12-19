@@ -8,7 +8,7 @@ import loading from '../assets/loading.gif';
 import {ImYoutube2} from 'react-icons/im'
 import {FiTwitter} from "react-icons/fi";
 import {RiInstagramLine} from "react-icons/ri";
-import {API, HOST, PORT} from "../config/host";
+import {API} from "../config/host";
 // import emailJs from '@emailjs/browser';
 import {useAuthStateContext} from "../context/AuthContextProvider";
 
@@ -19,6 +19,7 @@ const Register = () => {
     const [numCarte, setNumCarte] = useState("");
     const [message, setMessage] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     // const CHARACTER = "0123456789abcdefghijklmnopqrstuvwxyz!@#&*ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const [isLoading, setIsLoading] = useState(false)
     const [canConnect, setCanConnect] = useState(false)
@@ -34,12 +35,19 @@ const Register = () => {
     //     return numCarte+password;
     // }
 
+
     const testPassword = (password) => {
-        return password.length > 6;
+        return password.length > 2;
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if (confirmPassword !== password){
+            setMessage("mot de passe incorrecte.")
+            return null;
+        }
+        
         if (!numCarte) {
             setMessage("Veuillez saisir votre numéro de carte étudiant.")
             return null;
@@ -90,14 +98,16 @@ const Register = () => {
 
 
     useEffect(() => {
+        console.log(window.navigator.userAgent);
         auth.logout();
     }, []);
 
     return (
-        <div className=" min-h-screen flex items-center justify-center">
-            <div className="bg-opacity-30 p-2 md:p-10 bg-main-bg drop-shadow-login mb-16   rounded-3xl overflow-hidden">
-                <img src={vector} alt="" className="animate-pulse absolute drop-shadow-login-blob -top-20 -right-10"/>
-                <img src={vector1} alt="" className="animate-pulse absolute drop-shadow-login-blob -bottom-32 -left-24"/>
+        <div className=" min-h-screen flex items-center flex-col justify-center relative overflow-hidden">
+            <div className="text-white text-4xl mb-10 md:hidden font-bold">Inscription</div>
+            <div className="bg-opacity-[0.45] p-2 md:p-10 bg-main-bg drop-shadow-login mb-16  rounded-3xl overflow-hidden">
+                <img src={vector} alt="" className="blob absolute drop-shadow-login-blob -top-20 -right-10 z-50"/>
+                <img src={vector1} alt="" className="blob absolute drop-shadow-login-blob -bottom-32 -left-24 z-50"/>
                 <div className="mt-4 mb-4 md:mb-10 ">
                     <img src={logo} alt="" className="mx-auto"/>
                 </div>
@@ -126,7 +136,7 @@ const Register = () => {
                                peer-focus:-translate-y-6 ">
                             Numéro carte étudiant</label>
                     </div>
-                        <div className="relative flex">
+                    <div className="relative flex">
                         <input type="password"
                         id="password"
                         value={password}
@@ -146,13 +156,34 @@ const Register = () => {
                                peer-focus:top-2 peer-focus:scale-75
                                peer-focus:-translate-y-6 ">
                         Mot de passe</label>
-                        </div></>)}
+                        </div>
+                        <div className="relative flex">
+                        <input type="password"
+                        id="confirmpassword"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        className=" w-72 md:block p-1 md:w-[320px] peer appearance-none bg-transparent focus:outline focus:outline-0 border-b-2 border-white"
+                        placeholder=""
+                        />
+                        <label htmlFor="confirmpassword"
+                        className="absolute italic text-[18px]
+                               text-gray-500 duration-300
+                               transform -translate-y-4 scale-75 z-10
+                               origin-[0] peer-focus:px-0
+                               peer-focus:text-cyan-400
+                               peer-placeholder-shown:scale-100
+                               peer-placeholder-shown:-translate-y-1/2
+                               peer-placeholder-shown:top-1/2
+                               peer-focus:top-2 peer-focus:scale-75
+                               peer-focus:-translate-y-6 ">
+                        Confirmer le mot de passe</label>
+                        </div>
+                        </>)}
                     {!canConnect && !isLoading && <div className="text-center">
                         <input type="submit"
                                value="S'inscrire"
                                className="cursor-pointer p-2 px-4 font-semibold border-2 rounded-2xl text-white drop-shadow-login-button bg-main-bg border-b-blue-300 border-r-blue-300"/>
-                        <br/>
-                        <span className="mt-2">ou</span>
+
                     </div>}
                     {canConnect && !isLoading && <p className="text-center text-green-500 md:w-auto w-64 md:h-auto ">
                         Inscription réussie !
@@ -160,7 +191,8 @@ const Register = () => {
                     {isLoading && <div><img src={loading} className="w-20 mx-auto rounded-full" alt=""/></div>}
 
                 </form>
-                <div className="text-center text-white mb-10">
+                <div className="text-center text-white mb-4">
+                    {!canConnect && !isLoading && <div className="">ou</div>}
                     <span className="text-cyan-400 font-semibold cursor-pointer" onClick={() => navigate('/connexion')}>Se connecter.</span>
                 </div>
             </div>

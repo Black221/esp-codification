@@ -104,12 +104,12 @@ export default function EtudiantList({
     }, [rowSelection, setSelectedRows]);
 
     return (
-            <div className="mb-3 bg-[rgba(0,0,0,0.3)] text-white flex flex-col justify-center  items-center  p-4 w-screen mx-auto rounded-xl ">
+            <div className="mb-3  text-white flex flex-col justify-center  items-center   p-4 w-screen mx-auto rounded-xl ">
             {showGlobalSearch && (
                 <DebouncedInput
                     value={globalFilter ?? ""}
                     onChange={(value) => setGlobalFilter(String(value))}
-                    className="my-5 appearance-none bg-transparent focus:outline focus:outline-0 border-b-2 border-white w-25 my-1 "
+                    className="my-10  appearance-none bg-transparent focus:outline focus:outline-0 border-b-2 border-white w-80 text-xl "
                     placeholder="Rechercher..."
                 />
             )}

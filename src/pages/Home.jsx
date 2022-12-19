@@ -17,6 +17,7 @@ const Home = () => {
     const [members, setMembers] = useState([]);
     const [view, setView] = useState("")
     const [level, setLevel] = useState("")
+    const [message, setMessage] = useState("");
 
     const {roomReserved, setRoomReserved, showNotification, setShowNotification,isNotificationValidate, setIsNotificationValidate} = useStateContext();
     const auth = useAuthStateContext();
@@ -37,6 +38,7 @@ const Home = () => {
         axios.get(`${API}/chambre/getReserved/${id}`,
             {headers: {  Authorization : `Bearer ${auth.user.token}`} })
             .then((res) => {
+                console.log(res.data.members)
                 setMembers(res.data.membres)
             })
             .catch((error) => {
@@ -49,8 +51,11 @@ const Home = () => {
             axios.post(`${API}/reservation/reserver/${choice}`,
                 {num_carte: auth.user.num_carte},
                 {headers: {Authorization: `Bearer ${auth.user.token}`}})
-                .then(() => {
-                    setRoomReserved(rooms.filter((room) => (room._id === choice))[0]);
+                .then((res) => {
+                    if (res.data.code !== 500)
+                        setRoomReserved(rooms.filter((room) => (room._id === choice))[0]);
+                    else 
+                        setMessage(res.data.msg)
                 })
                 .catch((error) => {
                 })
@@ -80,8 +85,8 @@ const Home = () => {
             navigate('/reservation');
     }, [roomReserved]);
 
-    const activeClass = "whitespace-nowrap p-5 py-2 border border-orange-500 rounded bg-orange-600";
-    const defaultClass = "whitespace-nowrap p-5 py-2 border border-orange-500 rounded";
+    const activeClass = "whitespace-nowrap p-5 py-2 border border-green-500 rounded bg-green-600";
+    const defaultClass = "whitespace-nowrap p-5 py-2 border border-green-500 rounded";
 
     return (
         <div className="text-white overflow-hidden">
@@ -137,14 +142,13 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="mt-10 md:mt-20 w-screen">
-                    <div className="text-center text-red-500">
-                    </div>
+                    <div className="text-center text-red-400">{message}</div>
                     <ListItem chambre={rooms.filter((room) => (room._id === choice))[0]} members={members} />
                 </div>
-                <div className=" mt-6 space-x-3">
+                <div className=" mt-6 text-xl">
                     <button disabled={!choice} onClick={() => {
                         setShowNotification(true);
-                    }} className="cursor-pointer py-1 px-6 border rounded-full">Réserver</button>
+                    }} className={`cursor-pointer py-1 px-6 border rounded-full bg-green-600 border-green-400  ${!choice && "bg-opacity-0"}`}>Réserver</button>
                 </div>
             </div>
         </div>

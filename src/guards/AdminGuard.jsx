@@ -9,8 +9,6 @@ export const RequireAdmin = ({children}) => {
 
     const access = JSON.parse(localStorage.getItem('access-key'));
 
-    if ( !auth.user && !access)
-        return <Navigate to='/connexion' />
 
     if (!auth.user.admin)
        return <Navigate to="/accueil" />

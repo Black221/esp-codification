@@ -3,7 +3,7 @@ import HeadComponent from '../components/HeadComponent';
 import ListItem from "../components/ListItem";
 import reservation from '../assets/reservation.png';
 import axios from "axios";
-import {API, HOST, PORT} from "../config/host";
+import {API} from "../config/host";
 import {useAuthStateContext} from "../context/AuthContextProvider";
 import {useStateContext} from "../context/ContexProvider";
 import {useNavigate} from "react-router-dom";
@@ -11,16 +11,16 @@ import {useNavigate} from "react-router-dom";
 const Reservation = () => {
 
     const [members, setMembers] = useState([]);
-    const [message, setMessages] = useState("Chambre réservée :")
 
     const navigate = useNavigate();
-    const {roomReserved, setRoomReserved, codifier} = useStateContext();
+    const {roomReserved} = useStateContext();
     const auth = useAuthStateContext();
 
     const fetchMembers = (id) => {
         axios.get(`${API}/chambre/getReserved/${id}`,
             {headers: {Authorization: `Bearer ${auth.user.token}`}})
             .then((res) => {
+                console.log(res.data.membres);
                 setMembers(res.data.membres)
             })
             .catch((error) => {
@@ -69,7 +69,7 @@ const Reservation = () => {
         <div className="text-white">
             <HeadComponent />
             <div className="mt-6 flex flex-col justify-center items-center">
-                <h1 className="font-bold md:text-3xl text-2xl text-center">{message}</h1>
+                <h1 className="font-bold md:text-3xl text-2xl text-center">Chambre réservée :</h1>
                <div className="md:flex items-center md:space-x-10 mt-10">
                    <div className=" flex flex-col items-center justify-center space-y-8 mb-4">
                        <img src={reservation} className="w-80 md:w-96" alt=""/>

@@ -64,11 +64,12 @@ const ColumnHeader = ({ header, table, dontShowFilters }) => {
                                     }[header.column.getIsSorted()] ??
                                     " ")}
                         </div>
-                        { header.column.getCanFilter() && !dontShowFilters ? (
+                        
+                        { /* header.column.getCanFilter() && header.column.id !== "sexe" && header.column.id !== "actions" && !dontShowFilters ? (
                             <div>
                                 <Filter column={header.column} table={table} />
                             </div>
-                        ) : null }
+                        ) : null */}
                     </>
                 )}
 

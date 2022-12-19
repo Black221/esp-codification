@@ -7,7 +7,7 @@ import {ImYoutube2} from 'react-icons/im'
 import {FiTwitter} from "react-icons/fi";
 import {RiInstagramLine} from "react-icons/ri";
 import axios from "axios";
-import {API, HOST, PORT} from "../config/host";
+import {API} from "../config/host";
 import {useAuthStateContext} from "../context/AuthContextProvider";
 import {useStateContext} from "../context/ContexProvider";
 import loading from "../assets/loading.gif";
@@ -100,10 +100,11 @@ const Login = () => {
     }, []);
 
     return (
-        <div className=" min-h-screen flex items-center justify-center relative">
-           <div className="bg-opacity-30 p-2 md:p-10 bg-main-bg drop-shadow-login mb-16   rounded-3xl overflow-hidden">
-               <img src={vector} alt="" className="animate-pulse absolute drop-shadow-login-blob -top-20 -right-10"/>
-               <img src={vector1} alt="" className="animate-pulse absolute drop-shadow-login-blob -bottom-32 -left-24"/>
+        <div className=" min-h-screen flex items-center flex-col justify-center relative overflow-hidden">
+            <div className="text-white text-4xl mb-10 md:hidden font-bold">Connexion</div>
+           <div className="bg-opacity-60 p-2 md:p-10 bg-main-bg drop-shadow-login mb-16  rounded-3xl overflow-hidden">
+               <img src={vector} alt="" className="blob absolute drop-shadow-login-blob -top-20 -right-10"/>
+               <img src={vector1} alt="" className="blob absolute drop-shadow-login-blob -bottom-32 -left-24"/>
                <div className="mt-4 mb-4 md:mb-10 ">
                    <img src={logo} alt="" className="mx-auto"/>
                </div>

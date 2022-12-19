@@ -12,6 +12,9 @@ const Background = () => {
     const particlesLoaded = useCallback(async (container) => {
     }, []);
 
+
+
+
     return (
         <Particles
             className="absolute "
@@ -52,10 +55,10 @@ const Background = () => {
                 },
                 particles: {
                     color: {
-                        value: "#91b9ea",
+                        value: "#4ade80",
                     },
                     links: {
-                        color: "#0364d2",
+                        color: "#4ade80",
                         distance: 140,
                         enable: true,
                         opacity: 0.3,
