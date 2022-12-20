@@ -23,6 +23,14 @@ export default function TableRow({
         event.dataTransfer.setData("row", JSON.stringify(dragData));
     };
 
+    const niveau = {
+        '5': 'DIC3',
+        '4': 'DIC2',
+        '3': 'DIC1',
+        '2': 'DUT2',
+        '1': 'DUT1',
+    }
+    
     return (
         <Fragment>
             <tr
@@ -46,7 +54,7 @@ export default function TableRow({
                                 width: cell.column.getSize(),
                             },
                         }}>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        { cell.id.substring(2) !== "niveau" ?  flexRender(cell.column.columnDef.cell, cell.getContext()) : niveau[cell.getValue()]}
                     </td>
                 ))}
 
