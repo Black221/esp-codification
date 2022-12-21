@@ -54,7 +54,7 @@ export default function TableRow({
                                 width: cell.column.getSize(),
                             },
                         }}>
-                        { cell.id.substring(2) !== "niveau" ?  flexRender(cell.column.columnDef.cell, cell.getContext()) : niveau[cell.getValue()]}
+                        { flexRender(cell.column.columnDef.cell, cell.getContext()) }
                     </td>
                 ))}
 

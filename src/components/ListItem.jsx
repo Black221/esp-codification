@@ -19,10 +19,10 @@ const ListItem = ({chambre, members}) => {
                 </thead>
                 <tbody className="text-center">
                 {members && members.map((member) => (
-                    <tr key={member._id} className="border-b border-gray-500">
-                        <td className="py-3 px-1 md:px-6">{`${member.prenom} ${member.nom}`}</td>
-                        <td className="py-3 px-1 md:px-6">{member.option}</td>
-                        <td className="py-3 px-1 md:px-6">{member.niveau}</td>
+                    <tr key={member?._id} className="border-b border-gray-500">
+                        <td className="py-3 px-1 md:px-6">{`${member?.prenom} ${member?.nom}`}</td>
+                        <td className="py-3 px-1 md:px-6">{member?.option}</td>
+                        <td className="py-3 px-1 md:px-6">{member?.niveau}</td>
                     </tr>
                 ))}
                 </tbody>
