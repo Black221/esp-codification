@@ -61,7 +61,7 @@ export default function TableBottom({ resetOrder, resetFilters, table }) {
                     onChange={(e) => {
                         table.setPageSize(Number(e.target.value));
                     }}>
-                    {[10, 20, 30, 40, 50].map((pageSize) => (
+                    {[10, 20, 30, 40, 50, 100, 200].map((pageSize) => (
                         <option key={pageSize} value={pageSize}>
                             Show {pageSize}
                         </option>
